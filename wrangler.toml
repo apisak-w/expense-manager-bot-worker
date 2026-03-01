@@ -1,0 +1,23 @@
+name = "expense-manager-bot-worker"
+main = "src/worker.ts"
+compatibility_date = "2024-11-01"
+
+[vars]
+# Add non-sensitive variables here if needed.
+# Sensitive variables must be set via: wrangler secret put <NAME>
+# Required secrets:
+#   TELEGRAM_BOT_TOKEN
+#   GOOGLE_SERVICE_ACCOUNT_JSON
+#   GOOGLE_SHEET_ID
+
+[env.production]
+# Production-specific overrides (if needed)
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+
+[[kv_namespaces]]
+binding = "BOT_USERS_KV"
+id = "0665d7944a85454480ff73eaa8cefe48"
