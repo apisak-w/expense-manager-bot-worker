@@ -49,18 +49,26 @@ export async function handleReport(ctx: BotContext, text: string): Promise<void>
   const loadingRes = await ctx.reply(
     `Fetching report for ${periodLabel}... please wait.`
   );
+  
+  if (!loadingRes.ok) {
+    console.error("Failed to send loading message:", loadingRes.description);
+  }
   const loadingId = loadingRes.result?.message_id;
 
   try {
     const rangeName = "'(Pivot) Annual Report'!A:K";
+    console.log(`Fetching values for range: ${rangeName}`);
     const values = await ctx.sheetsClient.getValues(rangeName);
+    console.log(`Fetched ${values?.length ?? 0} rows from sheets.`);
 
     const data = getPivotReportData(values, targetMonth, targetYear);
     if (!data) {
+      console.warn(`No report data found for ${periodLabel}`);
       if (loadingId !== undefined) await ctx.deleteMessage(loadingId);
       await ctx.reply(`No records found for ${periodLabel}.`);
       return;
     }
+    console.log(`Report data parsed for ${data.month} ${data.year}`);
 
     // Build MarkdownV2 block-quoted report with spoiler masking
     const title = `📅 Report: ${data.month} ${data.year}`;
@@ -80,9 +88,17 @@ export async function handleReport(ctx: BotContext, text: string): Promise<void>
     const maskedTotal = `||${escapeMarkdownV2(`฿${data.total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` )}||`;
     report += `>\n>💰 *${escapeMarkdownV2("Total Monthly Expense:")}* ${maskedTotal}`;
 
-    if (loadingId !== undefined) await ctx.deleteMessage(loadingId);
+    if (loadingId !== undefined) {
+      await ctx.deleteMessage(loadingId);
+    }
 
-    await ctx.reply(report, { parseMode: "MarkdownV2", protectContent: true });
+    const sendRes = await ctx.reply(report, { parseMode: "MarkdownV2", protectContent: true });
+    if (!sendRes.ok) {
+      console.error("Failed to send final report:", sendRes.description);
+      // Fallback: try sending without Markdown formatting if it failed due to bad escaping
+      await ctx.reply("Error: Failed to format report correctly. Sending raw total.");
+      await ctx.reply(`Total for ${periodLabel}: ฿${data.total.toLocaleString()}`);
+    }
   } catch (err) {
     console.error("Error in handleReport:", err);
     if (loadingId !== undefined) await ctx.deleteMessage(loadingId);

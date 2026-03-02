@@ -53,7 +53,17 @@ export async function sendTelegramMessage(
     body: JSON.stringify(payload),
   });
 
-  return response.json() as Promise<TelegramResponse>;
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`Telegram API error: ${response.status} ${response.statusText}`, errorText);
+    return { ok: false, description: errorText };
+  }
+
+  const tgData = (await response.json()) as TelegramResponse;
+  if (!tgData.ok) {
+    console.error("Telegram API success but ok=false:", tgData);
+  }
+  return tgData;
 }
 
 /**

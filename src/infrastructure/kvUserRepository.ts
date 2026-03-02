@@ -13,11 +13,7 @@ export class KvUserRepository implements UserRepository {
   }
 
   async getById(userId: number): Promise<User> {
-    const key = `user:${userId}`;
-    console.log(`KvUserRepository: Fetching key '${key}'`);
-
-    const raw = await this.kv.get(key);
-    console.log(`KvUserRepository: Raw data for '${key}': ${raw}`);
+    const raw = await this.kv.get(`user:${userId}`);
 
     if (!raw) {
       return createUnauthorizedUser(userId);

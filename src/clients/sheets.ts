@@ -138,6 +138,12 @@ export class SheetsClient {
       headers: { Authorization: `Bearer ${token}` },
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Google Sheets API error: ${response.status} ${response.statusText}`, errorText);
+      throw new Error(`Google Sheets API error: ${response.status} ${errorText}`);
+    }
+
     const data = (await response.json()) as { values?: unknown[][] };
     return data.values ?? [];
   }
