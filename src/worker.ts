@@ -23,6 +23,16 @@ export default {
       return new Response("Method Not Allowed", { status: 405 });
     }
 
+    const missingEnvs: string[] = [];
+    if (!env.TELEGRAM_BOT_TOKEN) missingEnvs.push("TELEGRAM_BOT_TOKEN");
+    if (!env.GOOGLE_SERVICE_ACCOUNT_JSON) missingEnvs.push("GOOGLE_SERVICE_ACCOUNT_JSON");
+    if (!env.GOOGLE_SHEET_ID) missingEnvs.push("GOOGLE_SHEET_ID");
+
+    if (missingEnvs.length > 0) {
+      console.error(`Missing required environment variables: ${missingEnvs.join(", ")}`);
+      return new Response("Internal Server Error: missing configuration", { status: 500 });
+    }
+
     try {
       const data = (await request.json()) as TelegramUpdate;
       const message = data.message;
