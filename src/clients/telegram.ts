@@ -55,7 +55,10 @@ export async function sendTelegramMessage(
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error(`Telegram API error: ${response.status} ${response.statusText}`, errorText);
+    console.error(
+      `Telegram API error: ${response.status} ${response.statusText}`,
+      errorText
+    );
     return { ok: false, description: errorText };
   }
 

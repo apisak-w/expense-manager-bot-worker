@@ -7,11 +7,36 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
-    "deploy:dry": "wrangler deploy --dry-run --outdir dist"
+    "deploy:dry": "wrangler deploy --dry-run --outdir dist",
+    "test": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,toml,yml}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.12.18",
     "@cloudflare/workers-types": "^4.20260301.1",
+    "@eslint/js": "^10.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "eslint": "^10.0.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.1",
+    "prettier": "^3.8.1",
     "typescript": "^5.7.3",
+    "typescript-eslint": "^8.56.1",
+    "vitest": "^3.0.7",
     "wrangler": "^4.69.0"
   }
 }
