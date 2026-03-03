@@ -6,8 +6,18 @@ import { handleGetPermissions } from "./handlers/user.handler";
 
 const app = new Hono<{ Bindings: Env }>();
 
-// FIXME: Turn this into environment variable
-app.use("*", cors());
+app.use(
+  "*",
+  cors({
+    origin: (origin, c) => {
+      const allowedOrigins = c.env.CORS_ORIGIN.split(",");
+      if (allowedOrigins.includes(origin)) {
+        return origin;
+      }
+      return allowedOrigins[0];
+    },
+  })
+);
 
 app.get("/users/:userId/permissions", handleGetPermissions);
 

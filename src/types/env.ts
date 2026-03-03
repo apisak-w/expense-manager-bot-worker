@@ -3,4 +3,5 @@ export interface Env {
   GOOGLE_SERVICE_ACCOUNT_JSON: string;
   GOOGLE_SHEET_ID: string;
   BOT_USERS_KV: KVNamespace;
+  CORS_ORIGIN: string;
 }

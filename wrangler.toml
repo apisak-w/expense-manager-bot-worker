@@ -3,6 +3,7 @@ main = "src/worker.ts"
 compatibility_date = "2024-11-01"
 
 [vars]
+CORS_ORIGIN = "https://localhost:5173,https://127.0.0.1:5173"
 # Add non-sensitive variables here if needed.
 # Sensitive variables must be set via: wrangler secret put <NAME>
 # Required secrets:
