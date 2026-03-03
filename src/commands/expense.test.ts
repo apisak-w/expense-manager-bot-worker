@@ -34,7 +34,9 @@ describe("expense command", () => {
       100,
       false,
     ]);
-    expect(mockContext.reply).toHaveBeenCalledWith(expect.stringContaining("Recorded expense: ฿100 for lunch"));
+    expect(mockContext.reply).toHaveBeenCalledWith(
+      expect.stringContaining("Recorded expense: ฿100 for lunch")
+    );
   });
 
   it("should handle invalid format", async () => {
@@ -42,6 +44,8 @@ describe("expense command", () => {
     await handleExpense(mockContext, text);
 
     expect(mockSheetsClient.appendRow).not.toHaveBeenCalled();
-    expect(mockContext.reply).toHaveBeenCalledWith(expect.stringContaining("Invalid format"));
+    expect(mockContext.reply).toHaveBeenCalledWith(
+      expect.stringContaining("Invalid format")
+    );
   });
 });

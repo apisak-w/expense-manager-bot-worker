@@ -28,7 +28,7 @@ describe("BotContext", () => {
   it("should call sendTelegramMessage when reply is called", async () => {
     const text = "Hello world";
     const options = { parseMode: "MarkdownV2" };
-    (sendTelegramMessage as any).mockResolvedValue({ ok: true });
+    vi.mocked(sendTelegramMessage).mockResolvedValue({ ok: true });
 
     await ctx.reply(text, options);
 
@@ -37,7 +37,7 @@ describe("BotContext", () => {
 
   it("should call deleteTelegramMessage when deleteMessage is called", async () => {
     const messageId = 987;
-    (deleteTelegramMessage as any).mockResolvedValue(undefined);
+    vi.mocked(deleteTelegramMessage).mockResolvedValue(undefined);
 
     await ctx.deleteMessage(messageId);
 

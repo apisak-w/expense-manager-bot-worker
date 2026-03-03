@@ -30,7 +30,9 @@ export default {
 
     if (missingEnvs.length > 0) {
       console.error(`Missing required environment variables: ${missingEnvs.join(", ")}`);
-      return new Response("Internal Server Error: missing configuration", { status: 500 });
+      return new Response("Internal Server Error: missing configuration", {
+        status: 500,
+      });
     }
 
     try {

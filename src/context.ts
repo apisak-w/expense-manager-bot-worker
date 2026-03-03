@@ -21,7 +21,10 @@ export class BotContext {
     this.sheetsClient = sheetsClient;
   }
 
-  async reply(text: string, options: TelegramSendOptions = {}): Promise<TelegramResponse> {
+  async reply(
+    text: string,
+    options: TelegramSendOptions = {}
+  ): Promise<TelegramResponse> {
     return sendTelegramMessage(this.token, this.chatId, text, options);
   }
 

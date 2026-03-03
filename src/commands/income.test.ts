@@ -34,7 +34,9 @@ describe("income command", () => {
       5000,
       false,
     ]);
-    expect(mockContext.reply).toHaveBeenCalledWith(expect.stringContaining("Recorded income: ฿5000 for salary"));
+    expect(mockContext.reply).toHaveBeenCalledWith(
+      expect.stringContaining("Recorded income: ฿5000 for salary")
+    );
   });
 
   it("should handle invalid format", async () => {
@@ -42,6 +44,8 @@ describe("income command", () => {
     await handleIncome(mockContext, text);
 
     expect(mockSheetsClient.appendRow).not.toHaveBeenCalled();
-    expect(mockContext.reply).toHaveBeenCalledWith(expect.stringContaining("Invalid format"));
+    expect(mockContext.reply).toHaveBeenCalledWith(
+      expect.stringContaining("Invalid format")
+    );
   });
 });

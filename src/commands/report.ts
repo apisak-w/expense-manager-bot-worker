@@ -18,9 +18,7 @@ const CATEGORY_EMOJIS: Record<string, string> = {
  * Parse an optional mm-yyyy argument from the /report command text.
  * Returns { month, year } in e.g. "Feb", "2026" format, or undefined if not provided / invalid.
  */
-function parseReportArgs(
-  text: string
-): { month: string; year: string } | undefined {
+function parseReportArgs(text: string): { month: string; year: string } | undefined {
   const parts = text.trim().split(/\s+/);
   if (parts.length < 2) return undefined;
 
@@ -49,7 +47,7 @@ export async function handleReport(ctx: BotContext, text: string): Promise<void>
   const loadingRes = await ctx.reply(
     `Fetching report for ${periodLabel}... please wait.`
   );
-  
+
   if (!loadingRes.ok) {
     console.error("Failed to send loading message:", loadingRes.description);
   }
@@ -80,19 +78,22 @@ export async function handleReport(ctx: BotContext, text: string): Promise<void>
       const sorted = Object.entries(data.summary).sort(([, a], [, b]) => b - a);
       for (const [cat, amt] of sorted) {
         const emoji = CATEGORY_EMOJIS[cat] ?? "📦";
-        const maskedAmt = `||${escapeMarkdownV2(`฿${amt.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` )}||`;
+        const maskedAmt = `||${escapeMarkdownV2(`฿${amt.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)}||`;
         report += `>${emoji} ${escapeMarkdownV2(cat)}: ${maskedAmt}\n`;
       }
     }
 
-    const maskedTotal = `||${escapeMarkdownV2(`฿${data.total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` )}||`;
+    const maskedTotal = `||${escapeMarkdownV2(`฿${data.total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)}||`;
     report += `>\n>💰 *${escapeMarkdownV2("Total Monthly Expense:")}* ${maskedTotal}`;
 
     if (loadingId !== undefined) {
       await ctx.deleteMessage(loadingId);
     }
 
-    const sendRes = await ctx.reply(report, { parseMode: "MarkdownV2", protectContent: true });
+    const sendRes = await ctx.reply(report, {
+      parseMode: "MarkdownV2",
+      protectContent: true,
+    });
     if (!sendRes.ok) {
       console.error("Failed to send final report:", sendRes.description);
       // Fallback: try sending without Markdown formatting if it failed due to bad escaping

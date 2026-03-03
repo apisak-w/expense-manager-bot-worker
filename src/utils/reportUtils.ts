@@ -27,9 +27,7 @@ export function getPivotReportData(
 
   const now = new Date();
   const resolvedYear = targetYear ?? now.getFullYear().toString();
-  const resolvedMonth =
-    targetMonth ??
-    now.toLocaleString("en-US", { month: "short" }); // e.g. "Feb"
+  const resolvedMonth = targetMonth ?? now.toLocaleString("en-US", { month: "short" }); // e.g. "Feb"
 
   let currentYear = "";
   let targetRow: unknown[] | null = null;

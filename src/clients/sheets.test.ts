@@ -4,7 +4,8 @@ import { SheetsClient } from "./sheets";
 describe("SheetsClient", () => {
   const serviceAccountJson = JSON.stringify({
     client_email: "test@example.com",
-    private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC7\n-----END PRIVATE KEY-----",
+    private_key:
+      "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC7\n-----END PRIVATE KEY-----",
   });
   const sheetId = "fake-sheet-id";
   let client: SheetsClient;
@@ -20,12 +21,13 @@ describe("SheetsClient", () => {
     expect(client).toBeDefined();
   });
 
-  // Since getAccessToken is private and complex involves crypto, 
+  // Since getAccessToken is private and complex involves crypto,
   // we'll mock the whole getAccessToken by making it public for tests or mocking fetch for token
-  
+
   it("should handle error if Google Sheets API returns non-ok response", async () => {
     // Mock token request
-    const mockFetch = vi.fn()
+    const mockFetch = vi
+      .fn()
       .mockResolvedValueOnce({
         ok: true,
         json: async () => ({ access_token: "fake-token", expires_in: 3600 }),
@@ -37,21 +39,24 @@ describe("SheetsClient", () => {
         statusText: "Forbidden",
         text: async () => "Permission denied",
       });
-    
+
     vi.stubGlobal("fetch", mockFetch);
     // Mock crypto.subtle.importKey and sign to avoid actual RSA ops which are slow/complex in minimal tests
     vi.stubGlobal("crypto", {
-        subtle: {
-            importKey: vi.fn().mockResolvedValue({}),
-            sign: vi.fn().mockResolvedValue(new ArrayBuffer(32))
-        }
+      subtle: {
+        importKey: vi.fn().mockResolvedValue({}),
+        sign: vi.fn().mockResolvedValue(new ArrayBuffer(32)),
+      },
     });
 
-    await expect(client.getValues("A1:B2")).rejects.toThrow("Google Sheets API error: 403 Permission denied");
+    await expect(client.getValues("A1:B2")).rejects.toThrow(
+      "Google Sheets API error: 403 Permission denied"
+    );
   });
 
   it("should return empty array if getValues has no values in response", async () => {
-     const mockFetch = vi.fn()
+    const mockFetch = vi
+      .fn()
       .mockResolvedValueOnce({
         ok: true,
         json: async () => ({ access_token: "fake-token", expires_in: 3600 }),
@@ -60,13 +65,13 @@ describe("SheetsClient", () => {
         ok: true,
         json: async () => ({}),
       });
-    
+
     vi.stubGlobal("fetch", mockFetch);
     vi.stubGlobal("crypto", {
-        subtle: {
-            importKey: vi.fn().mockResolvedValue({}),
-            sign: vi.fn().mockResolvedValue(new ArrayBuffer(32))
-        }
+      subtle: {
+        importKey: vi.fn().mockResolvedValue({}),
+        sign: vi.fn().mockResolvedValue(new ArrayBuffer(32)),
+      },
     });
 
     const values = await client.getValues("A1:B2");
@@ -74,34 +79,31 @@ describe("SheetsClient", () => {
   });
 
   it("should correctly format records in getAllRecords", async () => {
-    const mockFetch = vi.fn()
-     .mockResolvedValueOnce({
-       ok: true,
-       json: async () => ({ access_token: "fake-token", expires_in: 3600 }),
-     })
-     .mockResolvedValueOnce({
-       ok: true,
-       json: async () => ({ 
-           values: [
-               ["Name", "Age"],
-               ["Alice", 30],
-               ["Bob"]
-           ] 
-       }),
-     });
-   
-   vi.stubGlobal("fetch", mockFetch);
-   vi.stubGlobal("crypto", {
-       subtle: {
-           importKey: vi.fn().mockResolvedValue({}),
-           sign: vi.fn().mockResolvedValue(new ArrayBuffer(32))
-       }
-   });
+    const mockFetch = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ access_token: "fake-token", expires_in: 3600 }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          values: [["Name", "Age"], ["Alice", 30], ["Bob"]],
+        }),
+      });
 
-   const records = await client.getAllRecords();
-   expect(records).toEqual([
-       { Name: "Alice", Age: 30 },
-       { Name: "Bob", Age: "" }
-   ]);
- });
+    vi.stubGlobal("fetch", mockFetch);
+    vi.stubGlobal("crypto", {
+      subtle: {
+        importKey: vi.fn().mockResolvedValue({}),
+        sign: vi.fn().mockResolvedValue(new ArrayBuffer(32)),
+      },
+    });
+
+    const records = await client.getAllRecords();
+    expect(records).toEqual([
+      { Name: "Alice", Age: 30 },
+      { Name: "Bob", Age: "" },
+    ]);
+  });
 });

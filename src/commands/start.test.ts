@@ -10,7 +10,9 @@ describe("start command", () => {
 
     await handleStart(mockContext);
 
-    expect(mockContext.reply).toHaveBeenCalledWith(expect.stringContaining("Hi! I'm your Expense Manager Bot."));
+    expect(mockContext.reply).toHaveBeenCalledWith(
+      expect.stringContaining("Hi! I'm your Expense Manager Bot.")
+    );
     expect(mockContext.reply).toHaveBeenCalledWith(expect.stringContaining("/expense"));
   });
 });

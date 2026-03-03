@@ -5,7 +5,8 @@ describe("telegram client", () => {
   describe("escapeMarkdownV2", () => {
     it("should escape special characters", () => {
       const input = "Hello_World * [test] (link) ~ ` > # + - = | { } . ! \\";
-      const expected = "Hello\\_World \\* \\[test\\] \\(link\\) \\~ \\` \\> \\# \\+ \\- \\= \\| \\{ \\} \\. \\! \\\\";
+      const expected =
+        "Hello\\_World \\* \\[test\\] \\(link\\) \\~ \\` \\> \\# \\+ \\- \\= \\| \\{ \\} \\. \\! \\\\";
       expect(escapeMarkdownV2(input)).toBe(expected);
     });
 
