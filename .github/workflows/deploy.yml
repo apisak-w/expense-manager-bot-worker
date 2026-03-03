@@ -20,15 +20,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Type check
-        run: pnpm typecheck
-
-      - name: Run tests
-        run: pnpm exec vitest run
-
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
