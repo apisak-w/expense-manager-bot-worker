@@ -13,6 +13,7 @@ export default tseslint.config(
     rules: {
       "prettier/prettier": "error",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/explicit-function-return-type": "error",
       "no-console": "off",
     },
   },

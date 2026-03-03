@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { parseRecordMessage } from "./expenseUtils";
+import { parseRecordMessage } from "./expense";
 
 describe("expenseUtils", () => {
   describe("parseRecordMessage", () => {

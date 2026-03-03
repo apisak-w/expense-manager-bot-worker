@@ -1,6 +1,6 @@
 import { BotContext } from "../context";
 import { escapeMarkdownV2 } from "../clients/telegram";
-import { getPivotReportData } from "../utils/reportUtils";
+import { getPivotReportData } from "../utils/report";
 
 const CATEGORY_EMOJIS: Record<string, string> = {
   Shopping: "🛍️",

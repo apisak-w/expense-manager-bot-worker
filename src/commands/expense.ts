@@ -1,5 +1,5 @@
 import { BotContext } from "../context";
-import { parseRecordMessage } from "../utils/expenseUtils";
+import { parseRecordMessage } from "../utils/expense";
 
 export async function handleExpense(ctx: BotContext, text: string): Promise<void> {
   console.log("Handling /expense command");
