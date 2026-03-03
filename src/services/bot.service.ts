@@ -37,7 +37,6 @@ export class BotService {
 
     if (!userId) return;
 
-    // --- Auth Check ---
     const user = await this.authService.authenticate(userId);
     console.log(`User attempt — ID: ${userId}, authorized: ${user.isAuthorized}`);
 
@@ -50,14 +49,12 @@ export class BotService {
       return;
     }
 
-    // --- Build Context ---
     const sheetsClient = new SheetsClient(
       this.config.googleServiceAccount,
       this.config.googleSheetId
     );
     const ctx = new BotContext(this.config.telegramToken, chatId, sheetsClient);
 
-    // --- Route Command ---
     if (text.startsWith("/start")) {
       await handleStart(ctx);
     } else if (text.startsWith("/report")) {
