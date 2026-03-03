@@ -23,6 +23,9 @@ jobs:
       - name: Type check
         run: pnpm typecheck
 
+      - name: Run tests
+        run: pnpm exec vitest run
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
