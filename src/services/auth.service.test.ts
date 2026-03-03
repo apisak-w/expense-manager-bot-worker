@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { AuthService } from "./authService";
+import { AuthService } from "./auth.service";
 import { UserRepository, User } from "../domain/user";
 
 describe("AuthService", () => {

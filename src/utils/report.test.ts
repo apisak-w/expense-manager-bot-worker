@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getPivotReportData } from "./reportUtils";
+import { getPivotReportData } from "./report";
 
 describe("reportUtils", () => {
   describe("getPivotReportData", () => {
